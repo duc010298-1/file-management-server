@@ -25,6 +25,8 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
 
 
 class FileUploadSerializer(DynamicFieldsModelSerializer):
+    uploaded_by = serializers.ReadOnlyField(source='uploaded_by.id')
+
     class Meta:
         model = FileUpload
         fields = '__all__'
