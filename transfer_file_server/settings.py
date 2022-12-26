@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -26,7 +27,8 @@ SECRET_KEY = 'django-insecure-zf@!-tdhbfbr8vcfy##da+9+$-di8%@k&v#l#bb2iyc^w=^bd@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Example: ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ') if os.environ.get('ALLOWED_HOSTS') != None else []
 
 
 # Application definition
@@ -38,10 +40,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'rest_framework',
     'transfer_file_app.apps.TransferFileAppConfig',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=3650),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1)
+}
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'transfer_file_server.urls'
 
@@ -107,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ho_Chi_Minh'
 
 USE_I18N = True
 
@@ -124,6 +142,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.environ.get('MEDIA_ROOT', default='C:/Users/duc01/Desktop/uploaded')
+MEDIA_ROOT = os.environ.get(
+    'MEDIA_ROOT', default='C:/Users/duc01/Desktop/uploaded')
 
 FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
