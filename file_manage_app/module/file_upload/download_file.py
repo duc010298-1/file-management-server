@@ -1,13 +1,12 @@
-from django.db import transaction
-from django.http import Http404
+from django.http import FileResponse, Http404
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from file_server_app.models import FileUpload
+from file_manage_app.models import FileUpload
 
 
-class DeleteFileView(APIView):
+class DownloadFileView(APIView):
 
     permission_classes = [permissions.IsAuthenticated]
 
@@ -17,11 +16,9 @@ class DeleteFileView(APIView):
         except FileUpload.DoesNotExist:
             raise Http404
 
-    @transaction.atomic
-    def delete(self, request, pk):
+    def get(self, request, pk):
         user = request.user
         file_upload = self.get_object(pk)
         if file_upload.uploaded_by != user:
             return Response(status=status.HTTP_403_FORBIDDEN)
-        file_upload.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return FileResponse(file_upload.file.open(), as_attachment=True, filename=file_upload.file_name)

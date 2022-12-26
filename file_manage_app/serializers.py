@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from file_server_app.models import FileUpload
+from file_manage_app.models import FileUpload
 
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):

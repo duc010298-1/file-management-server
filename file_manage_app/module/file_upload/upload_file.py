@@ -4,8 +4,8 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from file_server_app.models import FileUpload
-from file_server_app.serializers import FileUploadSerializer
+from file_manage_app.models import FileUpload
+from file_manage_app.serializers import FileUploadSerializer
 
 
 class UploadFileView(APIView):

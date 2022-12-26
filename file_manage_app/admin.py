@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from file_server_app.models import FileUpload
+from file_manage_app.models import FileUpload
 
 admin.site.register(FileUpload)
