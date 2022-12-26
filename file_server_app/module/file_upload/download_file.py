@@ -3,7 +3,7 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from transfer_file_app.models import FileUpload
+from file_server_app.models import FileUpload
 
 
 class DownloadFileView(APIView):

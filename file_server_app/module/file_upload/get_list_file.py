@@ -3,8 +3,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from transfer_file_app.models import FileUpload
-from transfer_file_app.serializers import FileUploadSerializer
+from file_server_app.models import FileUpload
+from file_server_app.serializers import FileUploadSerializer
 
 
 class GetListFileView(APIView, PageNumberPagination):

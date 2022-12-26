@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class TransferFileAppConfig(AppConfig):
+class FileServerAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'transfer_file_app'
+    name = 'file_server_app'
