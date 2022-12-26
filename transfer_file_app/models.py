@@ -6,8 +6,8 @@ from django.dispatch import receiver
 
 class FileUpload(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    file_name = models.TextField(blank=True, null=True)
-    file_size = models.PositiveIntegerField(blank=True, null=True)
+    file_name = models.TextField(null=True)
+    file_size = models.PositiveIntegerField(null=True)
     file = models.FileField()
     uploaded_by = models.ForeignKey(
         'auth.User', related_name='file_uploads', on_delete=models.PROTECT
