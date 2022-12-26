@@ -11,7 +11,7 @@ class GetListFileView(APIView, PageNumberPagination):
 
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request, pk):
+    def get(self, request):
         user = request.user
         page_size = self.request.query_params.get('page_size')
         page = self.request.query_params.get('page')
