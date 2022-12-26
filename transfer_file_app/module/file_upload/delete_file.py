@@ -19,6 +19,9 @@ class DeleteFileView(APIView):
 
     @transaction.atomic
     def delete(self, request, pk):
+        user = request.user
         file_upload = self.get_object(pk)
+        if file_upload.uploaded_by != user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
         file_upload.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

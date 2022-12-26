@@ -20,12 +20,14 @@ class UploadFileView(APIView):
 
     @transaction.atomic
     def post(self, request):
+        user = request.user
         files = request.FILES
 
         for key in files:
             file = files.get(key)
             file_upload_serializer = FileUploadSerializer(data={
-                'image': file
+                'file': file,
+                'uploaded_by': user
             })
             if not file_upload_serializer.is_valid():
                 return Response(file_upload_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
