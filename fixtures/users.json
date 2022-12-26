@@ -1,0 +1,20 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$7frUNbwuj74r$tzb0cQSrrOY8+xwVD1LzepoFHtha5xaWy5/L9xV63vM=",
+            "last_login": null,
+            "is_superuser": true,
+            "username": "duc010298",
+            "first_name": "",
+            "last_name": "",
+            "email": "duc010298@gmail.com",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2021-04-20T09:05:48.711Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]
