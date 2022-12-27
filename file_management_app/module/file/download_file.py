@@ -21,4 +21,8 @@ class DownloadFileView(APIView):
         file = self.get_object(pk)
         if file.owner != user:
             return Response(status=status.HTTP_403_FORBIDDEN)
-        return FileResponse(file.file.open(), as_attachment=True, filename=file.file_name)
+        file_response = FileResponse(
+            file.file.open(), as_attachment=True, filename=file.file_name
+        )
+        file_response['Access-Control-Expose-Headers'] = 'Content-Disposition'
+        return file_response
