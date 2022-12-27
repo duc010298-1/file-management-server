@@ -1,4 +1,5 @@
 from django.urls import path
+from file_management_app.module.file.delete_all_file import DeleteAllFileView
 
 from file_management_app.module.file.delete_file import DeleteFileView
 from file_management_app.module.file.download_file import DownloadFileView
@@ -10,4 +11,5 @@ urlpatterns = [
     path('upload-file/', UploadFileView.as_view()),
     path('download-file/<int:pk>/', DownloadFileView.as_view()),
     path('delete-file/<int:pk>/', DeleteFileView.as_view()),
+    path('delete-all-file/', DeleteAllFileView.as_view()),
 ]
