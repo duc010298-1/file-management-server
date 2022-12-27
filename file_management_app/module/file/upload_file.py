@@ -4,8 +4,8 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from file_manage_app.models import FileUpload
-from file_manage_app.serializers import FileUploadSerializer
+from file_management_app.models import File
+from file_management_app.serializers import FileSerializer
 
 
 class UploadFileView(APIView):
@@ -14,8 +14,8 @@ class UploadFileView(APIView):
 
     def get_object(self, pk):
         try:
-            return FileUpload.objects.get(pk=pk)
-        except FileUpload.DoesNotExist:
+            return File.objects.get(pk=pk)
+        except File.DoesNotExist:
             raise Http404
 
     @transaction.atomic
@@ -24,11 +24,11 @@ class UploadFileView(APIView):
 
         for key in files:
             file = files.get(key)
-            file_upload_serializer = FileUploadSerializer(data={
+            file_serializer = FileSerializer(data={
                 'file': file,
             })
-            if not file_upload_serializer.is_valid():
-                return Response(file_upload_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            file_upload_serializer.save(uploaded_by=self.request.user)
+            if not file_serializer.is_valid():
+                return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            file_serializer.save(owner=self.request.user)
 
         return Response(status=status.HTTP_201_CREATED)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from file_manage_app.models import FileUpload
+from file_management_app.models import File
 
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
@@ -24,9 +24,9 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
 
 
-class FileUploadSerializer(DynamicFieldsModelSerializer):
-    uploaded_by = serializers.ReadOnlyField(source='uploaded_by.id')
+class FileSerializer(DynamicFieldsModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.id')
 
     class Meta:
-        model = FileUpload
+        model = File
         fields = '__all__'
