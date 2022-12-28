@@ -23,6 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-zf@!-tdhbfbr8vcfy##da+9+$-di8%@k&v#l#bb2iyc^w=^bd@'
+AES_KEY='mrWQHwP6GLjKSrFf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -146,3 +147,5 @@ MEDIA_ROOT = os.environ.get(
     'MEDIA_ROOT', default='C:/Users/duc01/Desktop/uploaded')
 
 FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
+
+SIGN_URL_LIFE_TIME = timedelta(minutes=5)
