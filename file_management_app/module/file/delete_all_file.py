@@ -12,6 +12,5 @@ class DeleteAllFileView(APIView):
 
     @transaction.atomic
     def delete(self, request):
-        user = request.user
-        files = File.objects.filter(owner=user).delete()
+        files = File.objects.filter(owner=request.user).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

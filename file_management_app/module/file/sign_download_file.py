@@ -23,9 +23,8 @@ class SignDownloadFileView(APIView):
             raise Http404
 
     def get(self, request, pk):
-        user = request.user
         file = self.get_object(pk)
-        if file.owner != user:
+        if file.owner != request.user:
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         due_date = datetime.now() + settings.SIGN_URL_LIFE_TIME
