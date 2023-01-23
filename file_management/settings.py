@@ -94,11 +94,11 @@ WSGI_APPLICATION = 'file_management.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASE_FILE = os.environ.get('DATABASE_FILE', default=BASE_DIR / 'db.sqlite3')
+FM_DATABASE_FOLDER = os.environ.get('FM_DATABASE_FOLDER', default=BASE_DIR / 'db.sqlite3')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DATABASE_FILE,
+        'NAME': FM_DATABASE_FOLDER / 'db.sqlite3',
     }
 }
 
