@@ -149,4 +149,4 @@ MEDIA_ROOT = os.environ.get(
 
 FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
 
-SIGN_URL_LIFE_TIME = timedelta(minutes=5)
+SIGN_URL_LIFE_TIME = timedelta(minutes=1)
