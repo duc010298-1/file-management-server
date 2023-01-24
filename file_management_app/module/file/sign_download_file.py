@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from file_management_app.models import File
+import json
 
 
 class SignDownloadFileView(APIView):
@@ -22,14 +23,16 @@ class SignDownloadFileView(APIView):
         except File.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk):
-        file = self.get_object(pk)
-        if file.owner != request.user:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+    def get(self, request):
+        list_file_id = json.loads(request.GET.get('list_file_id'))
+        for id in list_file_id:
+            file = self.get_object(id)
+            if file.owner != request.user:
+                return Response(status=status.HTTP_403_FORBIDDEN)
 
         due_date = datetime.now() + settings.SIGN_URL_LIFE_TIME
         payload = {
-            'file_id': file.id,
+            'list_file_id': list_file_id,
             'due_date': due_date.isoformat()
         }
         payload = json.dumps(payload).encode('ascii')

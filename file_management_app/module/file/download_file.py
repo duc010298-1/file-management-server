@@ -1,10 +1,12 @@
 import base64
 import json
+import zipfile
 from datetime import datetime
+from io import BytesIO
 
 from Crypto.Cipher import AES
 from django.conf import settings
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -37,9 +39,31 @@ class DownloadFileView(APIView):
         if due_date < datetime.now():
             return Response(status=status.HTTP_403_FORBIDDEN)
 
-        file = self.get_object(payload.get('file_id'))
-        file_response = FileResponse(
-            file.file.open(), as_attachment=True, filename=file.file_name
-        )
-        file_response['Access-Control-Expose-Headers'] = 'Content-Disposition'
-        return file_response
+        list_file_id = payload.get('list_file_id')
+        files = []
+        for id in list_file_id:
+            files.append(self.get_object(id))
+        if len(files) == 1:
+            file_response = FileResponse(
+                files[0].file.open(), as_attachment=True, filename=files[0].file_name
+            )
+            file_response['Access-Control-Expose-Headers'] = 'Content-Disposition'
+            return file_response
+        else:
+            in_memory = BytesIO()
+            zip = zipfile.ZipFile(in_memory, 'w', zipfile.ZIP_DEFLATED, False)
+            for file in files:
+                zip.writestr(file.file_name, file.file.read())
+            # fix for Linux zip files read in Windows
+            for file in zip.filelist:
+                file.create_system = 0
+            zip.close()
+
+            zip_file_name = datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
+            response = HttpResponse('', content_type='application/zip')
+            response['Content-Disposition'] = 'attachment; filename=%s.zip' % zip_file_name
+            response['Access-Control-Expose-Headers'] = 'Content-Disposition'
+            in_memory.seek(0)
+            response.write(in_memory.read())
+
+            return response

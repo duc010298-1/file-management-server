@@ -1,3 +1,5 @@
+import json
+
 from django.db import transaction
 from django.http import Http404
 from rest_framework import permissions, status
@@ -18,9 +20,14 @@ class DeleteFileView(APIView):
             raise Http404
 
     @transaction.atomic
-    def delete(self, request, pk):
-        file = self.get_object(pk)
-        if file.owner != request.user:
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        file.delete()
+    def delete(self, request):
+        list_file_id = json.loads(request.GET.get('list_file_id'))
+        files = []
+        for id in list_file_id:
+            file = self.get_object(id)
+            if file.owner != request.user:
+                return Response(status=status.HTTP_403_FORBIDDEN)
+            files.append(file)
+        for file in files:
+            file.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
